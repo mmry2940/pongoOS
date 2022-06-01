@@ -35,7 +35,6 @@ extern volatile char gBootFlag;
 
  */
 extern void * fdt;
-extern bool fdt_initialized;
 extern char gLinuxCmdLine[LINUX_CMDLINE_SIZE];
 
 void fdt_cmd() {
@@ -43,11 +42,9 @@ void fdt_cmd() {
         iprintf("please upload a fdt before issuing this command\n");
         return;
     }
-    if (fdt_initialized) free(fdt);
     fdt = malloc(LINUX_DTREE_SIZE);
     if (!fdt) panic("couldn't reserve heap for fdt");
     memcpy(fdt, loader_xfer_recv_data, loader_xfer_recv_count);
-    fdt_initialized = 1;
     loader_xfer_recv_count = 0;
 }
 
